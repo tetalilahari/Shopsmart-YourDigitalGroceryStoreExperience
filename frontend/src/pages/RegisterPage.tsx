@@ -1,37 +1,14 @@
+
 import React, { useState } from 'react';
 import { useNavigate, Link } from 'react-router-dom';
-import {
-  Card,
-  CardContent,
-  CardHeader,
-  CardTitle
-} from '@/components/ui/card';
-import {
-  Button
-} from '@/components/ui/button';
-import {
-  Input
-} from '@/components/ui/input';
-import {
-  Label
-} from '@/components/ui/label';
-import {
-  RadioGroup,
-  RadioGroupItem
-} from '@/components/ui/radio-group';
-import {
-  Mail,
-  Lock,
-  User,
-  Phone,
-  MapPin,
-  ArrowLeft,
-  Shield,
-  UserCheck
-} from 'lucide-react';
-import {
-  toast
-} from 'sonner';
+import { useAuth } from '@/contexts/AuthContext';
+import { Card, CardContent, CardHeader, CardTitle } from '@/components/ui/card';
+import { Button } from '@/components/ui/button';
+import { Input } from '@/components/ui/input';
+import { Label } from '@/components/ui/label';
+import { RadioGroup, RadioGroupItem } from '@/components/ui/radio-group';
+import { Mail, Lock, User, Phone, MapPin, ArrowLeft, Shield, UserCheck } from 'lucide-react';
+import { toast } from 'sonner';
 
 const RegisterPage = () => {
   const [formData, setFormData] = useState({
@@ -44,6 +21,7 @@ const RegisterPage = () => {
     role: 'user' as 'admin' | 'user'
   });
   const [isLoading, setIsLoading] = useState(false);
+  const { register } = useAuth();
   const navigate = useNavigate();
 
   const handleChange = (e: React.ChangeEvent<HTMLInputElement>) => {
@@ -62,7 +40,7 @@ const RegisterPage = () => {
 
   const handleSubmit = async (e: React.FormEvent) => {
     e.preventDefault();
-
+    
     if (!formData.name || !formData.email || !formData.password) {
       toast.error('Please fill in all required fields');
       return;
@@ -80,25 +58,7 @@ const RegisterPage = () => {
 
     setIsLoading(true);
     const { confirmPassword, ...userData } = formData;
-
-    let success = false;
-    try {
-      const res = await fetch('http://localhost:5000/api/users/register', {
-        method: 'POST',
-        headers: { 'Content-Type': 'application/json' },
-        body: JSON.stringify(userData),
-      });
-
-      const data = await res.json();
-      if (res.ok) {
-        success = true;
-      } else {
-        toast.error(data.message || 'Registration failed');
-      }
-    } catch (error) {
-      toast.error('Server error. Please try again later.');
-    }
-
+    const success = await register(userData);
     setIsLoading(false);
 
     if (success) {
@@ -108,6 +68,8 @@ const RegisterPage = () => {
       } else {
         navigate('/account');
       }
+    } else {
+      toast.error('Email already exists');
     }
   };
 
@@ -115,7 +77,11 @@ const RegisterPage = () => {
     <div className="min-h-screen bg-gray-50 flex items-center justify-center p-4">
       <div className="w-full max-w-md">
         <div className="mb-6">
-          <Button variant="ghost" onClick={() => navigate('/')} className="mb-4">
+          <Button
+            variant="ghost"
+            onClick={() => navigate('/')}
+            className="mb-4"
+          >
             <ArrowLeft className="h-4 w-4 mr-2" />
             Back to Home
           </Button>
@@ -129,7 +95,6 @@ const RegisterPage = () => {
           </CardHeader>
           <CardContent>
             <form onSubmit={handleSubmit} className="space-y-4">
-
               <div>
                 <Label htmlFor="name">Full Name *</Label>
                 <div className="relative">
