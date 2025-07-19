@@ -5,3 +5,8 @@ ShopSmart is a full-stack web application that offers a seamless digital grocery
 
 Built using React, Node.js, Express, and MongoDB, ShopSmart is optimized for speed, user-friendliness, and scalability.
 
+
+
+PROJECT REPORT OF MY PRPJECT LINK:
+
+https://drive.google.com/file/d/1oIUoN1KvR5sPfjfrJyk1BvwwR7yALp-d/view?usp=drivesdk
