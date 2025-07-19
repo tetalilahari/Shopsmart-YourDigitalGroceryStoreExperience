@@ -7,6 +7,6 @@ Built using React, Node.js, Express, and MongoDB, ShopSmart is optimized for spe
 
 
 
-PROJECT REPORT OF MY PRPJECT LINK:
+PROJECT REPORT OF MY PROJECT LINK:
 
 https://drive.google.com/file/d/1oIUoN1KvR5sPfjfrJyk1BvwwR7yALp-d/view?usp=drivesdk
